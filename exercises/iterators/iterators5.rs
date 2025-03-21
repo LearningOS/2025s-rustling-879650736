@@ -35,7 +35,11 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    match value {
+        Progress::None => map.values().filter(|&&v| v == Progress::None).count(),
+        Progress::Some => map.values().filter(|&&v| v == Progress::Some).count(),
+        Progress::Complete => map.values().filter(|&&v| v == Progress::Complete).count(),
+    }
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +58,21 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    
+    match value {
+        Progress::None => collection.iter()
+            .flat_map(|map| map.values())
+            .filter(|&&v| v == Progress::None)
+            .count(),
+        Progress::Some => collection.iter()
+            .flat_map(|map| map.values())
+            .filter(|&&v| v == Progress::Some)
+            .count(),
+        Progress::Complete => collection.iter()
+            .flat_map(|map| map.values())
+            .filter(|&&v| v == Progress::Complete)
+            .count(),
+    }
 }
 
 #[cfg(test)]
